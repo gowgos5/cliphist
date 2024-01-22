@@ -10,6 +10,7 @@ import (
 	"image"
 	"io"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -125,6 +126,11 @@ func store(in io.Reader, maxDedupeSearch, maxItems uint64) error {
 	if err := tx.Commit(); err != nil {
 		return fmt.Errorf("commit tx: %w", err)
 	}
+
+        if _, err := exec.Command("pkill", "-RTMIN+5", "i3blocks").Output(); err != nil {
+                return fmt.Errorf("pkill i3blocks")
+        }
+
 	return nil
 }
 
